@@ -198,12 +198,21 @@ class VideoPlayer:
         for video in videos:
             if search_term.lower() in video.title.lower():
                 matches.append(video)
-        print(f"Here are the results for {search_term}:")
-        for i in range(len(matches)):
-            print(f"{i + 1}) {matches[i].tostring()}")
-        print("Would you like to play any of the above? If yes, specify the number of the video.")
-        print("If your answer is not a valid number, we will assume it's a no.")
-        user_response = input("")
+        if len(matches) == 0:
+            print(f"No search results for {search_term}")
+        else:
+            print(f"Here are the results for {search_term}:")
+            for i in range(len(matches)):
+                print(f"{i + 1}) {matches[i].tostring()}")
+            print("Would you like to play any of the above? If yes, specify the number of the video.")
+            print("If your answer is not a valid number, we will assume it's a no.")
+            user_response = input("")
+            try:
+                index = int(user_response) - 1
+                if index in range(0, len(matches)):
+                    self.play_video(matches[index].video_id)
+            except ValueError:
+                pass
 
     def search_videos_tag(self, video_tag):
         """Display all videos whose tags contains the provided tag.
@@ -211,7 +220,26 @@ class VideoPlayer:
         Args:
             video_tag: The video tag to be used in search.
         """
-        print("search_videos_tag needs implementation")
+        videos = self._video_library.get_all_videos()
+        matches = []
+        for video in videos:
+            if video_tag.lower() in map(lambda x: x.lower(), video.tags):
+                matches.append(video)
+        if len(matches) == 0:
+            print(f"No search results for {video_tag}")
+        else:
+            print(f"Here are the results for {video_tag}:")
+            for i in range(len(matches)):
+                print(f"{i + 1}) {matches[i].tostring()}")
+            print("Would you like to play any of the above? If yes, specify the number of the video.")
+            print("If your answer is not a valid number, we will assume it's a no.")
+            user_response = input("")
+            try:
+                index = int(user_response) - 1
+                if index in range(0, len(matches)):
+                    self.play_video(matches[index].video_id)
+            except ValueError:
+                pass
 
     def flag_video(self, video_id, flag_reason=""):
         """Mark a video as flagged.
