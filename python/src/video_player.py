@@ -1,6 +1,7 @@
 """A video player class."""
 
 from .video_library import VideoLibrary
+from random import randint
 
 
 class VideoPlayer:
@@ -8,6 +9,7 @@ class VideoPlayer:
 
     def __init__(self):
         self._video_library = VideoLibrary()
+        self._current_video = None
 
     def number_of_videos(self):
         num_videos = len(self._video_library.get_all_videos())
@@ -15,8 +17,11 @@ class VideoPlayer:
 
     def show_all_videos(self):
         """Returns all videos."""
-
-        print("show_all_videos needs implementation")
+        print("Here's a list of all available videos:")
+        videos = self._video_library.get_all_videos()
+        videos.sort(key=lambda x: x.title)
+        for video in videos:
+            print(f"{video.title} ({video.video_id}) [{' '.join(video.tags)}]")
 
     def play_video(self, video_id):
         """Plays the respective video.
@@ -24,17 +29,28 @@ class VideoPlayer:
         Args:
             video_id: The video_id to be played.
         """
-        print("play_video needs implementation")
+        video = self._video_library.get_video(video_id)
+        if video is None:
+            print("Cannot play video: Video does not exist")
+            return
+        if self._current_video is not None:
+            self.stop_video()
+        self._current_video = video
+        print(f"Playing video: {video.title}")
 
     def stop_video(self):
         """Stops the current video."""
-
-        print("stop_video needs implementation")
+        if self._current_video is not None:
+            print(f"Stopping video: {self._current_video.title}")
+            self._current_video = None
+        else:
+            print("Cannot stop video: No video is currently playing")
 
     def play_random_video(self):
         """Plays a random video from the video library."""
-
-        print("play_random_video needs implementation")
+        videos = self._video_library.get_all_videos()
+        video_index = randint(0, len(videos) - 1)
+        self.play_video(videos[video_index].video_id)
 
     def pause_video(self):
         """Pauses the current video."""
