@@ -1,4 +1,8 @@
-"""A video player class."""
+"""A video player class.
+
+If continuing development, should consider refactoring out the "search videos" logic to a separate
+video searching class
+"""
 from .filtered_video_library import FilteredVideoLibrary
 from .video_playlist_library import PlaylistLibrary
 from random import randint

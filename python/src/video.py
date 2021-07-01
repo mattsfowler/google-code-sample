@@ -34,6 +34,7 @@ class Video:
 
     @property
     def is_flagged(self) -> bool:
+        """Returns whether or not this video is flagged."""
         return self._is_flagged
 
     @is_flagged.setter
@@ -42,6 +43,7 @@ class Video:
 
     @property
     def flag_reason(self):
+        """Returns the reason why this video was flagged (if it is not flagged, will be an empty string)."""
         return self._flag_reason
 
     @flag_reason.setter
