@@ -14,6 +14,8 @@ class Video:
         # Turn the tags into a tuple here so it's unmodifiable,
         # in case the caller changes the 'video_tags' they passed to us
         self._tags = tuple(video_tags)
+        self._is_flagged = False
+        self._flag_reason = ""
 
     @property
     def title(self) -> str:
@@ -30,6 +32,24 @@ class Video:
         """Returns the list of tags of a video."""
         return self._tags
 
+    @property
+    def is_flagged(self) -> bool:
+        return self._is_flagged
+
+    @is_flagged.setter
+    def is_flagged(self, value):
+        self._is_flagged = value
+
+    @property
+    def flag_reason(self):
+        return self._flag_reason
+
+    @flag_reason.setter
+    def flag_reason(self, value):
+        self._flag_reason = value
+
     def tostring(self):
         """Returns a formatted string representation of the video."""
-        return f"{self.title} ({self.video_id}) [{' '.join(self.tags)}]"
+        video_text = f"{self.title} ({self.video_id}) [{' '.join(self.tags)}]"
+        flag_text = "" if not self._is_flagged else f" - FLAGGED (reason: {self._flag_reason})"
+        return video_text + flag_text
